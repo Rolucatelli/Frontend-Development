@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - BlueVelvet Music Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>BlueVelvet Music Store</h1>
+        <h2>Register</h2>
+        <form id="registerForm">
+            <div>
+                <input type="text" id="name" placeholder="Name" required>
+            </div>
+
+            <div>
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+
+            <div>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+
+            <div>
+                <select id="role" required>
+                    <option value="">Select Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="editor">Editor</option>
+                    <option value="salesperson">Salesperson</option>
+                    <option value="shipper">Shipper</option>
+                </select>
+             </div>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="index.html">Login</a></p>
+    </div>
+    <!--
+        TRABALHO: Você deverá implementar o arquivo script.js para fornecer
+         as funcionalidades de persistência de usuários, senhas e produtos, além
+        de fornecer correta navegação entre as páginas web. 
+    -->
+    <script src="script.js"></script>
+</body>
+</html>

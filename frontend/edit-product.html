@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - BlueVelvet Music Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>BlueVelvet Music Store</h1>
+        <h2>Edit Product</h2>
+        <!-- 
+            TRABALHO - Inseri um exemplo específico nos controles de formulário abaixo. Na sua solução, você deverá usar JavaScript para que os campos dos formulário sejam  preenchidos automaticamente com base no produto selecionado para edição. 
+        -->
+        <form id="editProductForm">
+            <input type="hidden" id="productId" value="1">
+            <input type="text" id="name" value="Bee Thousand" placeholder="Product Name" required>
+            
+            <textarea id="shortDescription" placeholder="Short Description" required>
+The iconic 1994 album by Guided By Voices, known for its lo-fi aesthetic and experimental songwriting.
+            </textarea>
+            
+            <textarea id="fullDescription" placeholder="Full Description" required>
+Bee Thousand is the seventh studio album by American indie rock band Guided By Voices. Celebrated for its raw production and catchy melodies, this album has become a cult classic, influencing countless artists in the lo-fi and indie rock scenes. The CD edition includes all original tracks, remastered for better sound quality.
+            </textarea>
+            
+            <input type="text" id="brand" value="Guided By Voices Inc." placeholder="Brand" required>
+            <input type="text" id="category" value="Music - CD" placeholder="Category" required>
+            
+            <div>
+            <label>Choose main image</label>
+                <input type="file" id="mainImage" accept="image/png">
+            </div>
+
+            <div id="currentMainImage">
+                <p>Current Main Image: <em>bee-thousand-cover.png</em></p>
+            </div>
+            
+            <div>
+            <label>Choose featured images</label>
+                <input type="file" id="featuredImages" accept="image/png" multiple>
+             </div>
+            <div id="currentFeaturedImages">
+                <p>Current Featured Images: <em>bee-thousand-back.png, guided-by-voices-live.png</em></p>
+            </div>
+            
+            <input type="number" id="listPrice" value="14.99" placeholder="List Price" step="0.01" required>
+            <input type="number" id="discountPercent" value="10" placeholder="Discount Percent" min="0" max="100" required>
+            
+            <label>
+                <input type="checkbox" id="enabled" checked> Enabled
+            </label>
+            <label>
+                <input type="checkbox" id="inStock" checked> In Stock
+            </label>
+            
+            <input type="number" id="length" value="5.50" placeholder="Length (inches)" step="0.01" required>
+            <input type="number" id="width" value="5.00" placeholder="Width (inches)" step="0.01" required>
+            <input type="number" id="height" value="0.30" placeholder="Height (inches)" step="0.01" required>
+            <input type="number" id="weight" value="0.15" placeholder="Weight (pounds)" step="0.01" required>
+            
+            <input type="number" id="cost" value="8.00" placeholder="Cost" step="0.01" required>
+            
+            <div id="productDetails">
+                <input type="text" value="Release Year" placeholder="Detail Name">
+                <input type="text" value="1994" placeholder="Detail Value">
+                <button type="button">Remove</button>
+                <br>
+                <input type="text" value="Genre" placeholder="Detail Name">
+                <input type="text" value="Indie Rock, Lo-Fi" placeholder="Detail Value">
+                <button type="button">Remove</button>
+                <br>
+                <input type="text" placeholder="New Detail Name">
+                <input type="text" placeholder="New Detail Value">
+                <button type="button">Add Detail</button>
+             </div>
+
+            <button type="submit">Update Product</button>
+        </form>
+        <a href="dashboard.html">Back to Dashboard</a>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
