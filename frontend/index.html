@@ -4,12 +4,13 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Login - BlueVelvet Music Store</title>
-		<link rel="stylesheet" href="css/styles.css" />
+		<link rel="stylesheet" href="css/login-style.css" />
+		<script src="script.js" defer></script>
 	</head>
 	<body>
 		<div class="container">
 			<h1>Login to BlueVelvet Music Store</h1>
-			<form id="login-form" action="#" method="post">
+			<form id="login-form">
 				<label for="email">Email Address:</label>
 				<input
 					type="email"
@@ -41,7 +42,7 @@
 				</div>
 
 				<!-- This error message must be shown in case of incorrect credentials -->
-				<div id="error-message" style="color: red; display: none">
+				<div id="error-message">
 					<p>Incorrect email or password. Please try again.</p>
 				</div>
 

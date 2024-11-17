@@ -1,0 +1,133 @@
+/* 
+TRABALHO: Criei uma folha de estilo inicial para facilitar o  trabalho, mas
+sinta-se à vontade em alterá-lo completamente de forma a tornar a aplicação mais
+"bonita"e lembrando sempre de testar o layout responsivo de sua soluçõa.
+ */
+
+.container {
+	margin: calc(1.5em + 2vw);
+	padding: 2em;
+	border: 2px solid #ccc;
+	border-radius: 1.5em;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	background-color: #f8f8f8;
+}
+
+.container h1 {
+	font-size: calc(1.5em + 1vw);
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+.container h2 {
+	font-size: calc(1.2em + 1vw);
+	margin-bottom: 0.5em;
+}
+
+.container div {
+    font-size: calc(1em + 0.5vw);
+}
+
+#productControls {
+	margin-top: 15px;
+	margin-bottom: 30px;
+	display: flex;
+	flex-direction: row;
+    justify-content: space-between;
+	gap: 10px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse; /* Ensures borders are not double-spaced */
+}
+
+div#table{
+    overflow-x: auto;
+}
+
+th,
+td {
+	border: 1px solid #ddd; /* Creates a light gray border */
+	padding: 8px; /* Adds some space inside the cells */
+	text-align: left; /* Aligns text to the left */
+}
+
+/* Center-align only the images in the second column */
+td:nth-child(2), td:nth-child(n) {
+	text-align: center;
+}
+
+td img {
+    width: 100px;
+    height: 100px;
+}
+
+tr {
+    font-size: calc(1em + 0.5vw);
+}
+
+div#productControls button, div#pagination button {
+	padding: 10px;
+	font-size: 0.8em;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+div#pagination{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+div#productControls button:hover, div#pagination button:hover {
+    background-color: #0056b3;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #ebebeb;
+}
+
+table button {
+    padding: 5px;
+    font-size: 0.6em;
+    background-color: #006ce0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+
+    .container{
+        margin: 2vw;
+    }
+
+    #productControls {
+        margin-top: 15px;
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    tr {
+        font-size: calc(0.5em + 1vw);
+    }
+
+    tr img {
+        width: calc(2.5em + 1vw);
+        height: calc(2.5em + 1vw);
+    }
+ 
+    
+}

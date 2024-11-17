@@ -1,0 +1,58 @@
+/* 
+TRABALHO: Criei uma folha de estilo inicial para facilitar o  trabalho, mas
+sinta-se à vontade em alterá-lo completamente de forma a tornar a aplicação mais
+"bonita"e lembrando sempre de testar o layout responsivo de sua soluçõa.
+ */
+
+.container {
+	width: 80%;
+	margin: auto;
+	padding: 20px;
+	border: 2px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.container h1 {
+	font-size: calc(1.5em + 1vw);
+	text-align: center;
+	margin-bottom: 0.25em;
+}
+
+.container div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1em;
+	border-bottom: 1px solid #ccc;
+}
+
+.container div label {
+	font-size: calc(0.8em + 1vw);
+	text-align: left;
+	margin-right: 2.5em;
+}
+
+.container div span,
+.container div p {
+	font-size: calc(0.8em + 0.5vw);
+	text-align: right;
+	color: #333;
+}
+
+.container div img {
+	width: 100px;
+	height: 100px;
+	border-radius: 5px;
+}
+
+.container div ul {
+	display: flex;
+    flex-direction: column;
+	gap: 10px;
+}
+
+.container div ul li {
+	list-style: none;
+}

@@ -2,137 +2,44 @@
 TRABALHO: Criei uma folha de estilo inicial para facilitar o  trabalho, mas
 sinta-se à vontade em alterá-lo completamente de forma a tornar a aplicação mais
 "bonita"e lembrando sempre de testar o layout responsivo de sua soluçõa.
-*/
+ */
 
-* {
-	margin: 0;
-	padding: 0;
-	/* border: 1px solid #ff00ff; */
-}
-
-body {
-	font-family: Arial, sans-serif;
-	background-color: #f0f0f0;
-}
-
-.container {
-	margin: calc(1.5em + 2vw);
-	padding: 2em;
-	border: 2px solid #ccc;
-	border-radius: 1.5em;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-	background-color: #f8f8f8;
-}
-
-.container h1 {
-	font-size: calc(1.5em + 1vw);
-	text-align: center;
-	margin-bottom: 1em;
-}
-
-.container h2 {
-	font-size: calc(1.2em + 1vw);
-	margin-bottom: 0.5em;
+ .container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 form {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	margin-bottom: 20px;
-}
-
-form label {
-	font-size: calc(0.8em + 0.5vw);
-}
-
-form input[type="email"],
-form input[type="password"] {
-	padding: 5px;
-	font-size: calc(0.8em + 0.5vw);
-	border: 1px solid #ccc;
-	border-radius: 5px;
-}
-
-form textarea {
-  padding: 2px;
-  font-size: calc(0.8em + 0.5vw);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-form input[type="email"]:focus,
-form input[type="password"]:focus {
-	border: 1px solid #007bff;
-}
-
-form small {
-  font-size: calc(0.5em + 0.5vw);
-}
-
-form div {
-	display: flex;
-	gap: 10px;
-	align-items: center;
-	justify-content: center;
-  margin-bottom: 1em;
-	/* border: 1px solid #ff00ff; */
-}
-
-form div input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-}
-
-form div label {
-  font-size: calc(0.8em + 0.5vw);;
-}
-
-form div button {
-	padding: 10px;
-	font-size: 1.2em;
-	background-color: #007bff;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-form div button:hover {
-  background-color: #0056b3;
-}
-
-.align-right {
-  justify-content: flex-end;
-}
-
-form p {
-  text-align: center;
-  margin-bottom: -2em;
-  font-size: calc(0.6em + 0.5vw);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 #productControls {
-	margin-top: 15px;
-	margin-bottom: 30px;
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
+
 
 table {
-	width: 100%;
-	border-collapse: collapse; /* Ensures borders are not double-spaced */
+    width: 100%;
+    border-collapse: collapse; /* Ensures borders are not double-spaced */
 }
 
-th,
-td {
-	border: 1px solid #ddd; /* Creates a light gray border */
-	padding: 8px; /* Adds some space inside the cells */
-	text-align: left; /* Aligns text to the left */
+th, td {
+    border: 1px solid #ddd; /* Creates a light gray border */
+    padding: 8px; /* Adds some space inside the cells */
+    text-align: left; /* Aligns text to the left */
 }
 
 /* Center-align only the images in the second column */
 td:nth-child(2) {
-	text-align: center;
+    text-align: center;
 }
