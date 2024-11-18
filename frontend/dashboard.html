@@ -60,8 +60,8 @@
 					placeholder="Search products..."
 				/>
 				<select id="sortSelect">
+					<option value="id" selected>Sort by ID</option>
 					<option value="name">Sort by Name</option>
-					<option value="id">Sort by ID</option>
 					<option value="brand">Sort by Brand</option>
 					<option value="category">Sort by Category</option>
 				</select>
@@ -95,11 +95,13 @@
             TRABALHO - Os controles de paginação somente deverão ser exibidos se tivermos menos do que 5 produtos cadastrados.
         -->
 			<div id="pagination">
-				<button>First...</button>
-				<button>2</button>
-				<button>3</button>
-				<button>4</button>
-				<button>...Last</button>
+				<button id="firstPage">&lt;&lt;</button>
+				<button id="prevPage">&lt;</button>
+				<button id="numberPage1">1</button>
+				<button id="numberPage2">2</button>
+				<button id="numberPage3">3</button>
+				<button id="nextPage">&gt;</button>
+				<button id="lastPage">&gt;&gt;</button>
 			</div>
 		</div>
 	</body>

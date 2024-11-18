@@ -1,14 +1,34 @@
+// Declaration of all the variables
+
+// This is for the registration form
 const registerForm = document.querySelector("#registerForm");
 
+// This is for the login form
 const loginForm = document.querySelector("#login-form");
 const errorMsgLogin = document.querySelector("#error-message");
 const rememberMe = document.querySelector("#remember-me");
 
+// This is for the dashboard
 const userName = document.querySelector("#user-name");
 const logoutBtn = document.querySelector("#logoutBtn");
 const resetProductsBtn = document.querySelector("#resetProductsBtn");
 const addProductBtn = document.querySelector("#addProductBtn");
 const productList = document.querySelector("#productList");
+
+const pagination = document.querySelector("#pagination");
+const paginationButtons = {
+	prev: document.querySelector("#prevPage"),
+	next: document.querySelector("#nextPage"),
+	firstPage: document.querySelector("#firstPage"),
+	lastPage: document.querySelector("#lastPage"),
+	numberPage1: document.querySelector("#numberPage1"),
+	numberPage2: document.querySelector("#numberPage2"),
+	numberPage3: document.querySelector("#numberPage3"),
+};
+
+const searchProduct = document.querySelector("#searchInput");
+
+const sortSelect = document.querySelector("#sortSelect");
 
 const createProductForm = document.querySelector("#createProductForm");
 const productDetailsList = document.querySelector("#productDetailsList");
@@ -25,6 +45,148 @@ let userLoggedIn =
 	JSON.parse(localStorage.getItem("userLoggedIn")) ||
 	JSON.parse(sessionStorage.getItem("userLoggedIn")) ||
 	{};
+
+//This is for the pagination
+let pageInfo = {
+	currentPage: 1,
+	rows: 5,
+	pages: 1,
+};
+
+// Call the function to add dummy products
+// confirm("Do you want to add 20 dummy products?") && addDummyProducts();
+
+// Helper functions
+
+// This function adds 20 dummy products to the local storage
+function addDummyProducts() {
+	const products = JSON.parse(localStorage.getItem("products")) || [];
+	const dummyProducts = [];
+	const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+	for (let i = 0; i < 20; i++) {
+		const letter = letters[i % letters.length];
+		const product = {
+			id: products.length + i + 1,
+			name: `Product ${letter}`,
+			shortDescription: `Short description for product ${letter}`,
+			fullDescription: `Full description for product ${letter}`,
+			brand: `Brand ${letters[(i + 7) % letters.length]}`,
+			category: `Category ${letters[(i + 14) % letters.length]}`,
+			mainImage: `https://via.placeholder.com/150?text=Product+${letter}`,
+			featuredImages: [
+				`https://via.placeholder.com/150?text=Product+${letter}+Image+1`,
+				`https://via.placeholder.com/150?text=Product+${letter}+Image+2`,
+			],
+			listPrice: (i * 10).toFixed(2),
+			discountPercent: (i % 5).toFixed(2),
+			enabled: true,
+			inStock: i % 2 === 0,
+			dimensions: {
+				width: (i * 2).toFixed(2),
+				height: (i * 3).toFixed(2),
+				depth: (i * 4).toFixed(2),
+			},
+			weight: (i * 1.5).toFixed(2),
+			cost: (i * 5).toFixed(2),
+			details: [],
+			creationDate: new Date()
+				.toISOString()
+				.replace(/T/, " ")
+				.replace(/\..+/, ""),
+			updateDate: new Date()
+				.toISOString()
+				.replace(/T/, " ")
+				.replace(/\..+/, ""),
+		};
+
+		dummyProducts.push(product);
+	}
+
+	const updatedProducts = products.concat(dummyProducts);
+	localStorage.setItem("products", JSON.stringify(updatedProducts));
+	alert("20 dummy products added successfully!");
+}
+
+// This function updates the page buttons
+function updatePageButtons() {
+	const products = JSON.parse(localStorage.getItem("products")) || [];
+	pageInfo.pages = Math.ceil(products.length / pageInfo.rows);
+	const pageButtons = document.querySelectorAll(
+		"#pagination button[id^='numberPage']"
+	);
+	pageButtons.forEach((button, index) => {
+		const btnText = pageInfo.currentPage + index - 1;
+		if (btnText > 0 && btnText <= pageInfo.pages) {
+			button.style.display = "inline-block";
+			button.textContent = btnText;
+			button.addEventListener("click", (e) => {
+				const pageNumber = parseInt(e.target.textContent);
+				pageInfo.currentPage = pageNumber;
+				renderProducts(products);
+			});
+		} else {
+			button.style.display = "none";
+		}
+	});
+}
+
+// This function renders the products on the dashboard
+function renderProducts(products) {
+	const productTableBody = document.querySelector("#productList");
+	productTableBody.innerHTML = "";
+
+	const start = (pageInfo.currentPage - 1) * pageInfo.rows;
+	const end = start + pageInfo.rows;
+	const productsToDisplay = products.slice(start, end);
+
+	productsToDisplay.forEach((product) => {
+		const tr = document.createElement("tr");
+		tr.innerHTML = `
+            <td>${product.id}</td>
+            <td><img src="${product.mainImage}" alt="${product.name}" /></td>
+            <td>${product.name}</td>
+            <td>${product.brand}</td>
+            <td>${product.category}</td>
+            <td>
+                <button class="view-btn" onclick="viewProduct('${product.id}')">View Details</button>
+                <button class="edit-btn" onclick="editProduct('${product.id}')">Edit</button>
+                <button class="delete-btn" onclick="deleteProduct('${product.id}')">Delete</button>
+            </td>
+        `;
+		productTableBody.appendChild(tr);
+	});
+
+	updatePageButtons();
+}
+
+// This function redirects to the view product page
+function viewProduct(id) {
+	const product = products.find((p) => p.id == id);
+	localStorage.setItem("product", JSON.stringify(product));
+	window.location.href = "view-product.html";
+}
+
+// This function redirects to the edit product page
+function editProduct(id) {
+	const product = products.find((p) => p.id == id);
+	localStorage.setItem("product", JSON.stringify(product));
+	window.location.href = "edit-product.html";
+}
+
+// This function deletes a product
+function deleteProduct(id) {
+	const products = JSON.parse(localStorage.getItem("products")) || [];
+	const productIndex = products.findIndex((p) => p.id == id);
+	console.log(productIndex);
+	if (confirm("Are you sure you want to delete this product?")) {
+		products.splice(productIndex, 1);
+		console.log(products);
+		localStorage.setItem("products", JSON.stringify(products));
+		renderProducts(products);
+	}
+}
+
 
 // This section is for the registration form
 if (registerForm) {
@@ -99,12 +261,14 @@ if (loginForm) {
 
 // This section is for the dashboard
 
+// This show the user name on the dashboard
 if (userName && userLoggedIn.email) {
 	userName.innerHTML = userLoggedIn.name + " (" + userLoggedIn.role + ")";
 } else if (userName && !userLoggedIn.email) {
 	window.location.href = "index.html";
 }
 
+// This logs out the user
 if (logoutBtn) {
 	logoutBtn.addEventListener("click", (e) => {
 		localStorage.setItem("oldProducts", localStorage.getItem("products"));
@@ -120,59 +284,98 @@ if (logoutBtn) {
 	});
 }
 
+// This is for the create product button
 if (addProductBtn) {
 	addProductBtn.addEventListener("click", (e) => {
 		window.location.href = "create-product.html";
 	});
 }
 
+// This is for the reset products button
 if (resetProductsBtn) {
 	resetProductsBtn.addEventListener("click", (e) => {
 		if (confirm("Are you sure you want to reset all products?")) {
-			localStorage.setItem("products", localStorage.getItem("oldProducts"));
+			localStorage.setItem(
+				"products",
+				localStorage.getItem("oldProducts")
+			);
 			location.reload();
 		}
 	});
 }
 
-if (productList) {
-	products = JSON.parse(localStorage.getItem("products")) || [];
-	products.forEach((product) => {
-		const tr = document.createElement("tr");
-		tr.innerHTML = `
-		<td>${product.id}</td>
-		<td><img src="${product.mainImage}"/></td>
-		<td>${product.name}</td>
-		<td>${product.brand}</td>
-		<td>${product.category}</td>
-		<td>
-			<button class="view-btn" onclick="viewProduct('${product.id}')">View Details</button>
-			<button class="edit-btn" onclick="editProduct('${product.id}')">Edit</button>
-			<button class="delete-btn" onclick="deleteProduct('${product.id}')">Delete</button>
-		</td>
-	`;
-		productList.appendChild(tr);
+// This is for the search input
+if (searchProduct) {
+	searchProduct.addEventListener("input", (e) => {
+		const products = JSON.parse(localStorage.getItem("products")) || [];
+		const searchValue = e.target.value.toLowerCase();
+		const filteredProducts = products.filter((product) => {
+			return (
+				product.name.toLowerCase().includes(searchValue) ||
+				product.brand.toLowerCase().includes(searchValue) ||
+				product.category.toLowerCase().includes(searchValue)
+			);
+		});
+		renderProducts(filteredProducts);
 	});
 }
 
-function viewProduct(id) {
-	const product = products.find((p) => p.id == id);
-	localStorage.setItem("product", JSON.stringify(product));
-	window.location.href = "view-product.html";
-}
+// This is for the product list
+if (productList) {
+	products = JSON.parse(localStorage.getItem("products")) || [];
 
-function editProduct(id) {
-	const product = products.find((p) => p.id == id);
-	localStorage.setItem("product", JSON.stringify(product));
-	window.location.href = "edit-product.html";
-}
+	pageInfo.pages = Math.ceil(products.length / pageInfo.rows);
 
-function deleteProduct(id) {
-	const productIndex = products.findIndex((p) => p.id == id);
-	if (confirm("Are you sure you want to delete this product?")) {
-		products.splice(productIndex, 1);
-		localStorage.setItem("products", JSON.stringify(products));
-		location.reload();
+	//This is for the sort select
+	sortSelect.addEventListener("change", (e) => {
+		searchProduct.value = "";
+		const sortValue = e.target.value;
+		const sortedProducts = products.sort((a, b) => {
+			if (sortValue === "name") {
+				return a.name.localeCompare(b.name);
+			} else if (sortValue === "brand") {
+				return a.brand.localeCompare(b.brand);
+			} else if (sortValue === "category") {
+				return a.category.localeCompare(b.category);
+			} else if (sortValue === "id") {
+				return a.id - b.id;
+			}
+		});
+		localStorage.setItem("products", JSON.stringify(sortedProducts));
+		renderProducts(products);
+	});
+
+	//This is for the pagination buttons
+	paginationButtons.prev.addEventListener("click", (e) => {
+		if (pageInfo.currentPage > 1) {
+			pageInfo.currentPage--;
+			renderProducts(products);
+		} else {
+			alert("There are no previous pages!");
+		}
+	});
+
+	paginationButtons.next.addEventListener("click", (e) => {
+		if (pageInfo.currentPage < pageInfo.pages) {
+			pageInfo.currentPage++;
+			renderProducts(products);
+		} else {
+			alert("There are no more pages!");
+		}
+	});
+
+	paginationButtons.firstPage.addEventListener("click", (e) => {
+		pageInfo.currentPage = 1;
+		renderProducts(products);
+	});
+
+	paginationButtons.lastPage.addEventListener("click", (e) => {
+		pageInfo.currentPage = pageInfo.pages;
+		renderProducts(products);
+	});
+
+	if (products.length > 0) {
+		renderProducts(products);
 	}
 }
 
@@ -290,7 +493,6 @@ if (createProductForm) {
 			updateDate,
 		};
 
-		console.log(products);
 		products.push(product);
 		localStorage.setItem("products", JSON.stringify(products));
 		localStorage.removeItem("details");
