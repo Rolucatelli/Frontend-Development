@@ -16,6 +16,8 @@
         -->
 			<form id="editProductForm">
 				<input type="hidden" id="productId" value="1" />
+				<input type="hidden" id="creationDate" value="2000-01-01" />
+				<input type="hidden" id="updateDate" value="1" />
 				<input
 					type="text"
 					id="name"
@@ -152,34 +154,11 @@ Bee Thousand is the seventh studio album by American indie rock band Guided By V
 					required
 				/>
 
-				<div id="productDetails">
-					<input
-						type="text"
-						value="Release Year"
-						placeholder="Detail Name"
-					/>
-					<input
-						type="text"
-						value="1994"
-						placeholder="Detail Value"
-					/>
-					<button type="button">Remove</button>
-					<br />
-					<input
-						type="text"
-						value="Genre"
-						placeholder="Detail Name"
-					/>
-					<input
-						type="text"
-						value="Indie Rock, Lo-Fi"
-						placeholder="Detail Value"
-					/>
-					<button type="button">Remove</button>
-					<br />
-					<input type="text" placeholder="New Detail Name" />
-					<input type="text" placeholder="New Detail Value" />
-					<button type="button">Add Detail</button>
+				<div id="productDetails"></div>
+				<div>
+					<input id="detailName" type="text" placeholder="New Detail Name" />
+					<input id="detailValue" type="text" placeholder="New Detail Value" />
+					<button id="addDetailBtn" type="button">Add Detail</button>
 				</div>
 
 				<button type="submit">Update Product</button>
