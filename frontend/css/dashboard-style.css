@@ -83,6 +83,24 @@ div#pagination{
     gap: 10px;
 }
 
+div#pagination button.current-page {
+    background-color: #005fc4;
+    color: white;
+    border: white solid 1px;
+}
+
+div#pagination button.arrows {
+    background-color: #72b6ff;
+    color: white;
+    border: white solid 1px;
+    /* padding: 5px; */
+    font-size: 0.6em;
+}
+
+div#pagination button.arrows:hover {
+    background-color: #007bff;
+}
+
 div#productControls button:hover, div#pagination button:hover {
     background-color: #0056b3;
 }
