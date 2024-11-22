@@ -526,7 +526,7 @@ if (createProductForm) {
 		const details = getJson("details");
 
 		const product = {
-			id: products.length + 1,
+			id: products[products.length - 1].id + 1,
 			name,
 			shortDescription,
 			fullDescription,
