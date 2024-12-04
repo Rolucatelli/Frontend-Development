@@ -59,13 +59,30 @@ let pageInfo = {
 // Helper functions
 
 // This function gets the JSON data from the local storage
-function getJson(item) {
-	return JSON.parse(localStorage.getItem(item)) || [];
+async function getJson(url, method) {
+	try {
+		const response = await fetch("localhost:8080/api" + url, {
+			method: method || "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		if (!response.ok) {
+			throw new Error(`Response status: ${response.status}`);
+		}
+
+		const json = await response.json();
+		return json;
+	} catch (error) {
+		console.error(error.message);
+	}
+
+	// return JSON.parse(localStorage.getItem(item)) || [];
 }
 
 // This function adds 20 dummy products to the local storage
 function addDummyProducts() {
-	const products = getJson("products");
+	const products = getJson("/products");
 	const dummyProducts = [];
 	const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -115,40 +132,42 @@ function addDummyProducts() {
 
 // This function updates the page buttons
 function updatePageButtons() {
-	const products = getJson("products");
-    pageInfo.pages = Math.ceil(products.length / pageInfo.rows);
-    const pageButtons = document.querySelectorAll("#pagination button[id^='numberPage']");
+	const products = getJson("/products");
+	pageInfo.pages = Math.ceil(products.length / pageInfo.rows);
+	const pageButtons = document.querySelectorAll(
+		"#pagination button[id^='numberPage']"
+	);
 
-    const maxButtons = pageButtons.length;
-    const halfMaxButtons = Math.floor(maxButtons / 2);
+	const maxButtons = pageButtons.length;
+	const halfMaxButtons = Math.floor(maxButtons / 2);
 
 	// Choose the start and end page numbers
-    let startPage = Math.max(1, pageInfo.currentPage - halfMaxButtons);
-    let endPage = Math.min(pageInfo.pages, startPage + maxButtons - 1);
+	let startPage = Math.max(1, pageInfo.currentPage - halfMaxButtons);
+	let endPage = Math.min(pageInfo.pages, startPage + maxButtons - 1);
 
 	// Adjust the start and end page numbers
-    if (endPage - startPage < maxButtons - 1) {
-        startPage = Math.max(1, endPage - maxButtons + 1);
-    }
+	if (endPage - startPage < maxButtons - 1) {
+		startPage = Math.max(1, endPage - maxButtons + 1);
+	}
 
 	// Update the page buttons
-    pageButtons.forEach((button, index) => {
-        const btnText = startPage + index;
-        if (btnText <= pageInfo.pages) {
-            button.style.display = "inline-block";
-            button.textContent = btnText;
-            button.classList.remove("current-page");
-            if (btnText === pageInfo.currentPage) {
-                button.classList.add("current-page");
-            }
-            button.onclick = (e) => {
-                pageInfo.currentPage = btnText;
-                renderProducts(products);
-            };
-        } else {
-            button.style.display = "none";
-        }
-    });
+	pageButtons.forEach((button, index) => {
+		const btnText = startPage + index;
+		if (btnText <= pageInfo.pages) {
+			button.style.display = "inline-block";
+			button.textContent = btnText;
+			button.classList.remove("current-page");
+			if (btnText === pageInfo.currentPage) {
+				button.classList.add("current-page");
+			}
+			button.onclick = (e) => {
+				pageInfo.currentPage = btnText;
+				renderProducts(products);
+			};
+		} else {
+			button.style.display = "none";
+		}
+	});
 
 	// Hide the pagination if there is only one page
 	if (pageInfo.pages <= 1) {
@@ -228,11 +247,25 @@ function editProduct(id) {
 
 // This function deletes a product
 function deleteProduct(id) {
-	const products = getJson("products");
+	const products = getJson("/products");
 	const productIndex = products.findIndex((p) => p.id == id);
 	if (confirm("Are you sure you want to delete this product?")) {
 		products.splice(productIndex, 1);
-		localStorage.setItem("products", JSON.stringify(products));
+		// localStorage.setItem("products", JSON.stringify(products));
+		fetch("localhost:8080/api/products/" + id, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`Response status: ${response.status}`);
+				}
+				alert("Product deleted successfully!");
+				renderProducts(products);
+			})
+			.catch((error) => console.error(error.message));
 		if (pageInfo.currentPage > 1 && products.length % pageInfo.rows === 0) {
 			pageInfo.currentPage--;
 		}
@@ -256,7 +289,7 @@ if (registerForm) {
 			role,
 		};
 
-		users = getJson("users");
+		users = localStorage.getItem("users");
 		const userExists = users.find((u) => u.email === user.email);
 		if (userExists) {
 			alert("User already exists!");
@@ -283,7 +316,7 @@ if (loginForm) {
 			password,
 		};
 
-		users = getJson("users");
+		users = localStorage.getItem("users");
 		const userExists = users.find(
 			(u) => u.email === user.email && u.password === user.password
 		);
@@ -375,7 +408,7 @@ if (searchProduct) {
 
 // This is for the product list
 if (productList) {
-	products = getJson("products");
+	products = getJson("/products");
 
 	pageInfo.pages = Math.ceil(products.length / pageInfo.rows);
 
@@ -435,7 +468,8 @@ if (productList) {
 // This section is for the create product form
 
 if (productDetailsList) {
-	const details = getJson("details");
+	const details = getJson("/products");
+
 	details.forEach((detail) => {
 		const dName = document.createElement("input");
 		const dValue = document.createElement("input");
@@ -485,7 +519,7 @@ if (createProductForm) {
 	createProductForm.addEventListener("submit", (e) => {
 		e.preventDefault();
 
-		const products = getJson("products");
+		const products = getJson("/products");
 
 		const name = document.querySelector("#name").value;
 		const shortDescription =
@@ -547,8 +581,18 @@ if (createProductForm) {
 		};
 
 		products.push(product);
-		localStorage.setItem("products", JSON.stringify(products));
-		localStorage.removeItem("details");
+		fetch("localhost:8080/api/products/" + id, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`Response status: ${response.status}`);
+				}
+			})
+			.catch((error) => console.error(error.message));
 		alert("Product created successfully!");
 		window.location.href = "dashboard.html";
 		window.addEventListener("beforeunload", (e) => {
@@ -560,7 +604,6 @@ if (createProductForm) {
 // This section is for the view product page
 
 if (productDetails) {
-	const product = getJson("product");
 
 	const productID = document.querySelector("#product-id");
 	const productName = document.querySelector("#product-name");
@@ -579,6 +622,8 @@ if (productDetails) {
 	const weight = document.querySelector("#weight");
 	const cost = document.querySelector("#cost");
 	const productDetailsList = document.querySelector("#product-details-list");
+
+	const product = getJson("/products/" + productID);
 
 	productID.innerHTML = product.id;
 	productName.innerHTML = product.name;
@@ -610,7 +655,6 @@ if (productDetails) {
 if (editProductForm) {
 	// Load the product information
 
-	const product = getJson("product");
 
 	const productID = document.querySelector("#productId");
 	const productName = document.querySelector("#name");
@@ -632,6 +676,9 @@ if (editProductForm) {
 	const creationDate = document.querySelector("#creationDate");
 	const updateDate = document.querySelector("#updateDate");
 	const productDetailsList = document.querySelector("#productDetails");
+
+
+	const product = getJson("/products/" + productID);
 
 	productID.value = product.id;
 	productName.value = product.name;
@@ -771,7 +818,7 @@ if (editProductForm) {
 			.replace(/T/, " ")
 			.replace(/\..+/, "");
 
-		const details = getJson("details");
+		const details = localStorage.getItem("details");
 
 		const product = {
 			id,
@@ -796,8 +843,19 @@ if (editProductForm) {
 
 		const productIndex = products.findIndex((p) => p.id == id);
 		products.splice(productIndex, 1, product);
-		localStorage.setItem("products", JSON.stringify(products));
-		localStorage.removeItem("details");
+		// localStorage.setItem("products", JSON.stringify(products));
+		fetch("localhost:8080/api/products/" + id, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`Response status: ${response.status}`);
+				}
+			})
+			.catch((error) => console.error(error.message));
 		alert("Product updated successfully!");
 		window.location.href = "dashboard.html";
 		window.addEventListener("beforeunload", (e) => {
